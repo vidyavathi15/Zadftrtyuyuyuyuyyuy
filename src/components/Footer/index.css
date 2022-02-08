@@ -1,0 +1,57 @@
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .footer-container {
+    align-self: middle;
+  }
+}
+
+.covid-19-heading {
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 24px;
+  font-family: 'Bree Serif';
+  font-weight: 800;
+  font-style: normal;
+}
+.india-heading {
+  color: blue;
+  font-size: 20px;
+  line-height: 24px;
+  font-family: 'Bree Serif';
+  font-weight: 800;
+}
+.footer-text {
+  color: #94a3b8;
+  font-size: 20px;
+  line-height: 20px;
+  font-family: 'Roboto';
+  font-weight: normal;
+}
+
+@media screen and (max-width: 768px) {
+  .footer-text {
+    width: 450px;
+  }
+}
+.icons-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.icon-sizes {
+  color: #cbd5e1;
+  font-size: 52px;
+  margin: 15px;
+}
+.github-link {
+  text-decoration: none;
+}
+.instagram-link {
+  text-decoration: none;
+}

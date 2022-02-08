@@ -1,0 +1,136 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 95px;
+  padding: 30px;
+  padding-right: 95px;
+  background-color: #1e1e30;
+
+  height: 80px;
+  width: 100vw;
+}
+
+@media screen and (max-width: 768px) {
+  .header-container {
+    padding: 15px;
+    height: 50px;
+    width: 100vw;
+  }
+}
+.title-container {
+  display: flex;
+  align-items: center;
+}
+.title-link {
+  text-decoration: none;
+}
+.covid-19-heading {
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 24px;
+  font-family: 'Bree Serif';
+  font-weight: 800;
+  font-style: normal;
+}
+.india-heading {
+  color: blue;
+  font-size: 20px;
+  line-height: 24px;
+  font-family: Bree Serif;
+  font-weight: 800;
+  font-style: normal;
+}
+.nav-items-list {
+  display: flex;
+  padding-left: 0px;
+}
+.link-item {
+  list-style-type: none;
+}
+.route-link {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 16px;
+}
+.add-button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border-color: transparent;
+  margin-left: 185px;
+}
+
+@media screen and (min-width: 567px) {
+  .add-button {
+    display: none;
+  }
+}
+.theme-button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+.theme-img {
+  height: 40px;
+  width: 40px;
+}
+.theme-and-link-container {
+  display: flex;
+}
+
+@media screen and (max-width: 567px) {
+  .theme-and-link-container {
+    display: none;
+  }
+}
+.nav-bar-mobile-container {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Roboto';
+  margin-left: 32px;
+}
+
+@media screen and (min-width: 768px) {
+  .nav-bar-mobile-container {
+    display: none;
+  }
+}
+.nav-mobile-link-container {
+  display: flex;
+  padding-left: 0px;
+}
+.nav-link {
+  text-decoration: none;
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+.nav-mobile-home-text {
+  list-style-type: none;
+  margin-right: 15px;
+}
+
+.close-button-mobile {
+  background-color: transparent;
+
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin-right: 30px;
+}
+.close-icon-mobile {
+  color: #ffffff;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+}
