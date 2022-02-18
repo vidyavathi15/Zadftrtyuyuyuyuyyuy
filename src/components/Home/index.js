@@ -311,8 +311,6 @@ class Home extends Component {
   }
 
   onClickCloseButton = () => {
-    console.log(true)
-
     this.setState({isNavContent: true})
   }
 

@@ -5,6 +5,7 @@
   background: #182829;
   border-radius: 12px;
   display: flex;
+  overflow-x: auto;
 
   flex-direction: column;
   margin-bottom: 20px;

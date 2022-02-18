@@ -22,8 +22,12 @@ const Header = props => (
         toggleTheme()
       }
 
+      const headerBgColor = isDarkTheme
+        ? 'theme-white-color'
+        : 'actual-bg-color'
+
       return (
-        <nav className="header-container">
+        <nav className={`header-container ${headerBgColor}`}>
           <Link to="/" className="title-link">
             <h1 className="covid-19-heading">
               COVID19
@@ -48,7 +52,6 @@ const Header = props => (
             >
               <img className="theme-img" src={themeUrl} alt="theme" />
             </button>
-
             <ul className="nav-items-list">
               <li className="link-item">
                 <Link to="/" className="route-link">

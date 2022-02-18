@@ -5,14 +5,19 @@
   border-radius: 12px;
   color: #f8fafc;
   font-family: 'Roboto';
-  width: 110%;
+  width: 1146px;
+  height: 2080px;
+  left: 150px;
+  top: 576px;
   margin-top: 105px;
   padding: 10px;
 }
 @media screen and (min-width: 768px) {
   .state-table-header {
-    width: 60%;
-    margin-left: 20px;
+    width: 839px;
+    height: 2079px;
+    left: 24px;
+    top: 464px;
   }
 }
 

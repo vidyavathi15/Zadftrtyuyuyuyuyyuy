@@ -341,6 +341,7 @@ class SpecificState extends Component {
 
     const response = await fetch(apiUrl, options)
     const data = await response.json()
+    console.log(data)
 
     if (response.ok === true) {
       const keyNames = Object.keys(data[stateCode])
@@ -356,6 +357,7 @@ class SpecificState extends Component {
           const tested = total.tested ? total.tested : 0
           const deceased = total.deceased ? total.deceased : 0
           const lastUpdated = data[stateCode].meta.last_updated
+          const totalPopulation = data[stateCode].meta.population
 
           const findingName = statesList.find(
             each => each.state_code === stateCode,
@@ -371,6 +373,7 @@ class SpecificState extends Component {
             tested,
             lastUpdated,
             active: confirmed - (deceased + recovered),
+            totalPopulation,
           })
         }
       })
@@ -576,9 +579,10 @@ class SpecificState extends Component {
         imageUrl =
           'https://res.cloudinary.com/dfwdrrxpf/image/upload/v1643881212/Group_7352_bhmhl1.png'
         break
-      case name === 'Chhattishgarh':
+      case name === 'Chhattisgarh':
         imageUrl =
-          'https://res.cloudinary.com/dfwdrrxpf/image/upload/v1643881271/Group_7353_jrndys.png'
+          'https://res.cloudinary.com/ddzm2v7i3/image/upload/v1643432398/covid19%20project%20states%20images/Group_7353Chhattisgarh_bq9i6k.png'
+
         break
       case name === 'Odisha':
         imageUrl =
@@ -597,6 +601,10 @@ class SpecificState extends Component {
       case name === 'Tamil Nadu':
         imageUrl =
           'https://res.cloudinary.com/dfwdrrxpf/image/upload/v1643882056/Group_7356_gl3izp.png'
+        break
+      case name === 'Andhra Pradesh':
+        imageUrl =
+          'https://res.cloudinary.com/ddzm2v7i3/image/upload/v1643446883/Missing%20Covid19%20project%20images/Group_7354Andhar_Pradesh_muagmf.png'
         break
 
       default:
@@ -624,6 +632,7 @@ class SpecificState extends Component {
       active,
       confirmed,
       deceased,
+      totalPopulation,
     } = specificStateList[0]
 
     const changingColor = this.getChangingColor()
@@ -736,6 +745,14 @@ class SpecificState extends Component {
           </div>
           <div className="map-image-container">
             <img src={changingImageUrl} alt={name} className="map-image" />
+            <div className="state-population-container">
+              <p className="ncp-report-heading">NCP report</p>
+              <p className="population-heading">Population</p>
+              <p className="population-of-count">{totalPopulation}</p>
+              <p className="tested-heading">Tested</p>
+              <p className="state-tested-count">{tested}</p>
+              <p className="updated-lastly-at">(As of 31 October per source)</p>
+            </div>
           </div>
           <div className="top-districts">
             <h1 className={changingColor}>Top Districts</h1>
@@ -768,8 +785,8 @@ class SpecificState extends Component {
       />
       <h1>PAGE NOT FOUND</h1>
       <p className="failure-specific-text">
-        We&aposre sorry, the page you requested could not be found please go
-        back to the home page
+        We are sorry, the page you requested could not be found please go back
+        to the home page
       </p>
       <button type="button" className="failure-button">
         Home

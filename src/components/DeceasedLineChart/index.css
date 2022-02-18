@@ -6,13 +6,15 @@
   background: #1c1c2b;
   border-radius: 12px;
   display: flex;
+  overflow-x: auto;
+  align-items: center;
 
   flex-direction: column;
   margin-bottom: 20px;
 }
 .deceased-line-chart-mobile {
   width: 300px;
-  height: 200px;
+  height: 300px;
   color: #6c757d;
 
   background: #1c1c2b;

@@ -1,20 +1,16 @@
 import {Component} from 'react'
 import {withRouter} from 'react-router-dom'
-
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+} from 'recharts'
 import Loader from 'react-loader-spinner'
-
-import {XAxis, Legend, Tooltip, BarChart, Bar} from 'recharts'
-
-import ConfirmedLineChart from '../ConfirmedLineChart'
-
-import ActiveLineChart from '../ActiveLineChart'
-
-import RecoveredLineChart from '../RecoveredLineChart'
-
-import DeceasedLineChart from '../DeceasedLineChart'
-
-import TestedLineChart from '../TestedLineChart'
-
 import './index.css'
 
 const apiStatusConstants = {
@@ -24,35 +20,35 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
 }
 
-class BarGraphs extends Component {
+class ChartsData extends Component {
   state = {
     apiStatus: apiStatusConstants.initial,
     confirmedBarData: [],
     activeBarData: [],
     recoveredBarData: [],
     deceasedBarData: [],
-    testedBarData: [],
+    forOtherChart: '',
   }
 
   componentDidMount() {
-    this.getSateWiseGraphsData()
+    this.getChartData()
   }
 
-  getSateWiseGraphsData = async () => {
+  getChartData = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const {match} = this.props
     const {params} = match
     const {stateCode} = params
 
-    const apiUrl = 'https://apis.ccbp.in/covid19-timelines-data'
+    const apiUrl = `https://apis.ccbp.in/covid19-timelines-data`
     const options = {
       method: 'GET',
     }
 
     const response = await fetch(apiUrl, options)
-    const jsonData = await response.json()
-
     if (response.ok === true) {
+      const jsonData = await response.json()
+
       const datesArray = Object.keys(jsonData[stateCode].dates)
 
       const confirmedBarGraphData = datesArray.map(date => ({
@@ -85,28 +81,6 @@ class BarGraphs extends Component {
         deceasedBarGraphData.length,
       )
 
-      const testedBarGraphData = datesArray.map(date => ({
-        resultDate: date,
-        count: jsonData[stateCode].dates[date].total.tested,
-      }))
-
-      const latestUpdatedTestedBarGraphsData = testedBarGraphData.splice(
-        testedBarGraphData.length - 10,
-
-        testedBarGraphData.length,
-      )
-
-      /* const vaccineData = datesArray.map(date => ({
-        resultDate: date,
-        count:
-          jsonData[stateCode].dates[date].total.vaccinated1 +
-          jsonData[stateCode].dates[date].total.vaccinated2,
-      }))
-      /* const latestUpdatedVaccinatedData = vaccineData.splice(
-        vaccineData.length - 10,
-        vaccineData.length,
-      )
-      */
       const activeBarGraphData = datesArray.map(date => ({
         resultDate: date,
         count:
@@ -120,13 +94,25 @@ class BarGraphs extends Component {
         activeBarGraphData.length,
       )
 
+      const particularStateForOtherChart = datesArray.map(date => ({
+        date,
+        confirmed: jsonData[stateCode].dates[date].total.confirmed,
+        deceased: jsonData[stateCode].dates[date].total.deceased,
+        recovered: jsonData[stateCode].dates[date].total.recovered,
+        tested: jsonData[stateCode].dates[date].total.tested,
+        active:
+          jsonData[stateCode].dates[date].total.confirmed -
+          (jsonData[stateCode].dates[date].total.deceased +
+            jsonData[stateCode].dates[date].total.recovered),
+      }))
+
       this.setState({
         apiStatus: apiStatusConstants.success,
+        forOtherChart: particularStateForOtherChart,
         confirmedBarData: latestUpdatedConfirmedBarData,
         activeBarData: latestUpdatedActiveBarGraphsData,
         recoveredBarData: latestUpdatedRecoveredBarGraphData,
         deceasedBarData: latestUpdatedDeceasedBarGraphsData,
-        testedBarData: latestUpdatedTestedBarGraphsData,
       })
     } else {
       this.setState({apiStatus: apiStatusConstants.failure})
@@ -214,7 +200,6 @@ class BarGraphs extends Component {
     return (
       <div className="bar-graph-container">
         <BarChart
-          className="bar-chart-layouts"
           height={450}
           width={600}
           data={descendingOrderList}
@@ -259,28 +244,83 @@ class BarGraphs extends Component {
     )
   }
 
-  renderSpreadTrendsData = () => {
-    const {
-      confirmedBarData,
-      deceasedBarData,
-      recoveredBarData,
-      activeBarData,
-      testedBarData,
-    } = this.state
-    return (
-      <div className="daily-spread-trends-container">
-        <h1 className="spread-trends-heading">Daily Spread Trends</h1>
+  graph = (type, color) => {
+    const {forOtherChart} = this.state
 
-        <div testid="lineChartsContainer">
-          <ConfirmedLineChart confirmedBarData={confirmedBarData} />
-          <ActiveLineChart activeBarData={activeBarData} />
-          <RecoveredLineChart recoveredBarData={recoveredBarData} />
-          <DeceasedLineChart deceasedBarData={deceasedBarData} />
-          <TestedLineChart testedBarData={testedBarData} />
-        </div>
+    const dataFormatter = number => {
+      if (number > 1000) {
+        return `${(number / 1000).toString()}k`
+      }
+      return number.toString()
+    }
+
+    return (
+      <div>
+        <LineChart
+          width={800}
+          height={250}
+          data={forOtherChart}
+          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+        >
+          <XAxis
+            dataKey="date"
+            style={{
+              stroke: `${color}`,
+              fontFamily: 'Roboto',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+            }}
+            dy={10}
+          />
+          <YAxis
+            tickFormatter={dataFormatter}
+            tick={{
+              stroke: `${color}`,
+              strokeWidth: 0.5,
+              fontSize: 15,
+
+              fontFamily: 'Roboto',
+            }}
+            dataKey={type}
+          />
+          <Tooltip />
+          <Legend
+            wrapperStyle={{
+              paddingTop: 20,
+              textAlign: 'center',
+              fontSize: 12,
+              color: '#ffffff',
+              fontFamily: 'Roboto',
+            }}
+          />
+          <Line type="monotone" dataKey={type} stroke={color} />
+        </LineChart>
       </div>
     )
   }
+
+  renderSpreadTrendsData = () => (
+    <div className="barChart-app-container">
+      <h1 className="charts-title">Spread Trends</h1>
+      <div testid="lineChartsContainer" className="barcharts-container">
+        <div className="charts confirmed-background">
+          {this.graph('confirmed', '#FF073A')}
+        </div>
+        <div className="charts active-background">
+          {this.graph('active', '#007BFF')}
+        </div>
+        <div className="charts recovered-background">
+          {this.graph('recovered', '#27A243')}
+        </div>
+        <div className="charts deceased-background">
+          {this.graph('deceased', '#6C757D')}
+        </div>
+        <div className="charts tested-background">
+          {this.graph('tested', '#9673B9')}
+        </div>
+      </div>
+    </div>
+  )
 
   renderSuccessView = () => (
     <div>
@@ -333,4 +373,4 @@ class BarGraphs extends Component {
   }
 }
 
-export default withRouter(BarGraphs)
+export default withRouter(ChartsData)
